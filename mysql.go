@@ -277,9 +277,13 @@ func (s *Storage) LoadAccess(code string) (*osin.AccessData, error) {
 	}
 
 	result.Client = client
-	result.AuthorizeData, _ = s.LoadAuthorize(authorizeCode)
-	prevAccess, _ := s.LoadAccess(prevAccessToken)
-	result.AccessData = prevAccess
+	if authorizeCode != "" {
+		result.AuthorizeData, _ = s.LoadAuthorize(authorizeCode)
+	}
+	if prevAccessToken != "" {
+		prevAccess, _ := s.LoadAccess(prevAccessToken)
+		result.AccessData = prevAccess
+	}
 	return &result, nil
 }
 
